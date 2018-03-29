@@ -7,42 +7,17 @@ error,
 salida;
 float saldo = 1000.0; // se da un saldo inicial
 
-void actividades_de_deposito(){
-    printf("actividad de deposito \n");
-
-    int cantidad = -1;
-    while(cantidad != 0){
-        printf("¿Cuanto desea depositar?\n");
-        scanf("%d", &cantidad);
-        saldo = saldo + cantidad;   
-        printf("Saldo actualizado: %f \n", saldo);
-        fflush(stdin);
-    }
-}
-void actividades_de_retiro(){
-    printf("actividad de retiro \n");
-    int cantidad = -1;
-    while(cantidad != 0){
-        printf("¿Cuanto desea retirar?\n");
-        scanf("%d", &cantidad);
-        if(saldo - cantidad >= 0){
-            saldo = saldo - cantidad;   
-            printf("Saldo actualizado: %f \n", saldo);
-            fflush(stdin);
-        }else{
-            printf("No es posible realizar el retiro, cuenta con: %f \n", saldo);
-        }
-
-    }
-}
-
 void *proc_deposito(void *saldo_ptr) {
     float deposito;
     do {
         proc1wantIn = 1;
         proc_fav = 2;
         while (proc2wantIn && proc_fav == 2);
-        actividades_de_deposito();
+        printf("¿Cuanto desea depositar?\n");
+        scanf("%f", &deposito);
+        saldo = saldo + deposito;   
+        printf("Saldo actualizado: %f \n", saldo);
+        fflush(stdin);
         proc1wantIn = 0;
         int r = rand() % 3;
         sleep(r); // random entre 1 y 3
@@ -55,7 +30,16 @@ void *proc_retiro(void *saldo_ptr) {
         proc2wantIn = 1;
         proc_fav = 1;
         while (proc1wantIn && proc_fav == 1);
-        actividades_de_retiro();
+        printf("¿Cuanto desea retirar?\n");
+        scanf("%f", &retiro);
+        if(saldo - retiro >= 0){
+            saldo = saldo - retiro;   
+            printf("Saldo actualizado: %f \n", saldo);
+            fflush(stdin);
+        }else{
+            printf("No es posible realizar el retiro, cuenta con: %f \n", saldo);
+            fflush(stdin);
+        }
         proc2wantIn = 0;
         int r = rand() % 3;
         sleep(r); // random entre 1 y 3
